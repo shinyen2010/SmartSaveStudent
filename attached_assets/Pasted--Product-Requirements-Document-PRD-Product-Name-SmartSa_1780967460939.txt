@@ -1,0 +1,634 @@
+# Product Requirements Document (PRD)
+
+# Product Name
+
+SmartSave Student
+
+## Tagline
+
+"Spend Wisely. Save Smarter."
+
+---
+
+# Executive Summary
+
+SmartSave Student is an AI-powered personal finance platform designed specifically for students. The app helps students track expenses, manage budgets, achieve savings goals, improve financial literacy, and develop healthy spending habits through intelligent insights, gamification, and personalized recommendations.
+
+The platform addresses a common student challenge: managing limited financial resources while balancing education, lifestyle, and future financial goals.
+
+---
+
+# Problem Statement
+
+Students often struggle with:
+
+* Poor budgeting habits
+* Impulse spending
+* Lack of financial literacy
+* Difficulty tracking expenses
+* Inconsistent savings behavior
+* Financial stress before month-end
+* Lack of awareness about spending patterns
+
+As a result, many students fail to save money and develop long-term financial discipline.
+
+---
+
+# Product Vision
+
+To become the leading financial wellness platform for students by combining budgeting, savings, AI-powered coaching, financial education, and gamified habit building into one seamless experience.
+
+---
+
+# Goals
+
+## Business Goals
+
+* Acquire 100,000 student users within the first year
+* Become the preferred student finance app
+* Improve financial literacy among young adults
+* Create partnerships with universities and student organizations
+
+## User Goals
+
+* Track expenses effortlessly
+* Stay within budget
+* Build savings habits
+* Learn financial management skills
+* Reduce unnecessary spending
+* Achieve personal financial goals
+
+---
+
+# Target Audience
+
+## Primary Users
+
+* University students (18–25)
+* College students
+* Scholarship recipients
+* Students with part-time jobs
+
+## Secondary Users
+
+* High school students
+* Fresh graduates
+* Young adults managing finances independently
+
+---
+
+# Core Features
+
+## 1. Expense Tracking
+
+### Description
+
+Track all daily expenses in one place.
+
+### Functional Requirements
+
+* Manual expense entry
+* Receipt scanning using OCR
+* Expense editing
+* Expense categorization
+* Transaction history
+* Search and filtering
+
+### Categories
+
+* Food & Drinks
+* Transportation
+* Education
+* Entertainment
+* Shopping
+* Bills
+* Health
+* Miscellaneous
+
+---
+
+## 2. Smart Budget Planner
+
+### Description
+
+Create and monitor personalized budgets.
+
+### Functional Requirements
+
+* Monthly budget setup
+* Category spending limits
+* Auto-generated budget suggestions
+* Budget utilization tracking
+* Overspending alerts
+
+---
+
+## 3. Savings Goals
+
+### Description
+
+Help users save toward meaningful goals.
+
+### Functional Requirements
+
+* Multiple savings goals
+* Goal deadlines
+* Progress visualization
+* Savings recommendations
+* Milestone celebrations
+
+### Example Goals
+
+* Laptop Purchase
+* Vacation
+* Emergency Fund
+* Tuition Payment
+
+---
+
+## 4. AI Financial Coach
+
+### Description
+
+An intelligent assistant that provides personalized financial guidance.
+
+### Functional Requirements
+
+* Spending analysis
+* Budget recommendations
+* Savings suggestions
+* Spending habit identification
+* Weekly financial health reports
+
+### Example Insights
+
+* "You spent 25% more on food this week."
+* "Reducing food delivery orders could save RM80 monthly."
+
+---
+
+## 5. Spending Insights Dashboard
+
+### Description
+
+Visual analytics for spending behavior.
+
+### Functional Requirements
+
+* Spending trends
+* Monthly comparisons
+* Savings analytics
+* Category breakdowns
+* Financial score overview
+
+---
+
+## 6. Financial Health Score
+
+### Description
+
+Generate a score from 0–100 indicating overall financial wellness.
+
+### Factors
+
+* Savings rate
+* Budget adherence
+* Spending consistency
+* Goal achievement
+* Debt management
+
+---
+
+## 7. Smart Alerts & Notifications
+
+### Description
+
+Proactive reminders and warnings.
+
+### Functional Requirements
+
+* Budget threshold alerts
+* Goal reminders
+* Bill due reminders
+* Subscription renewal alerts
+* Unusual spending alerts
+
+---
+
+## 8. Subscription Tracker
+
+### Description
+
+Monitor recurring payments.
+
+### Functional Requirements
+
+* Detect subscriptions
+* Track monthly subscription costs
+* Cancellation recommendations
+* Renewal notifications
+
+---
+
+## 9. Bill Reminder System
+
+### Description
+
+Prevent missed payments.
+
+### Functional Requirements
+
+* Tuition reminders
+* Rent reminders
+* Utility payment reminders
+* Custom reminders
+
+---
+
+## 10. Spending Forecast
+
+### Description
+
+Predict future spending patterns.
+
+### Functional Requirements
+
+* End-of-month balance prediction
+* Overspending prediction
+* Savings forecast
+* Goal completion estimation
+
+---
+
+## 11. Cash Flow Calendar
+
+### Description
+
+Visual calendar for financial planning.
+
+### Functional Requirements
+
+* Income dates
+* Upcoming bills
+* Savings milestones
+* Expense schedules
+
+---
+
+## 12. Goal Simulation Calculator
+
+### Description
+
+Allow users to test different saving strategies.
+
+### Example Scenarios
+
+* Save RM5 daily
+* Save RM50 weekly
+* Reach RM5,000 goal in 6 months
+
+---
+
+## 13. Shared Expense Manager
+
+### Description
+
+Manage expenses with friends and roommates.
+
+### Functional Requirements
+
+* Bill splitting
+* Debt tracking
+* Group expenses
+* Payment reminders
+
+---
+
+# Gamification Features
+
+## 14. Savings Challenges
+
+Examples:
+
+* No-Spend Weekend
+* RM100 Savings Challenge
+* 30-Day Budget Challenge
+
+---
+
+## 15. Achievement System
+
+### Example Badges
+
+* First Budget Created
+* First RM100 Saved
+* Budget Master
+* Goal Achiever
+* Saving Streak Champion
+
+---
+
+## 16. Leveling System
+
+### Description
+
+Users earn XP for:
+
+* Logging expenses
+* Staying within budget
+* Completing goals
+* Finishing financial lessons
+
+---
+
+## 17. Campus Leaderboards
+
+### Description
+
+Friendly competition among:
+
+* Friends
+* Classes
+* Faculties
+* Universities
+
+---
+
+# Financial Education Features
+
+## 18. Financial Literacy Academy
+
+### Topics
+
+* Budgeting Basics
+* Saving Strategies
+* Credit Management
+* Student Loans
+* Investing Fundamentals
+* Emergency Funds
+
+---
+
+## 19. Interactive Quizzes
+
+### Features
+
+* Knowledge assessments
+* XP rewards
+* Progress tracking
+
+---
+
+## 20. Personalized Learning Path
+
+### Description
+
+AI recommends lessons based on spending behavior.
+
+Example:
+
+* Frequent overspending → Budgeting Course
+* Low savings rate → Saving Strategies Course
+
+---
+
+# Student-Centric Features
+
+## 21. Student Discounts Hub
+
+### Description
+
+Discover verified student deals.
+
+### Features
+
+* Nearby discounts
+* Cashback offers
+* Student-exclusive promotions
+* Deal notifications
+
+---
+
+## 22. Affordable Lifestyle Recommendations
+
+### Suggestions
+
+* Budget-friendly restaurants
+* Student cafes
+* Free campus events
+* Affordable transportation options
+
+---
+
+## 23. Textbook Marketplace
+
+### Features
+
+* Buy used textbooks
+* Sell textbooks
+* Exchange learning materials
+
+---
+
+## 24. Student Deal Alerts
+
+### Notifications
+
+* Laptop sales
+* Software discounts
+* Education promotions
+* Campus deals
+
+---
+
+# Social Features
+
+## 25. Savings Circles
+
+### Description
+
+Create groups with friends to save together.
+
+### Features
+
+* Shared goals
+* Group challenges
+* Progress visibility
+
+---
+
+## 26. Accountability Partner
+
+### Description
+
+Partner with another student to stay financially disciplined.
+
+---
+
+## 27. Community Tips Feed
+
+### Description
+
+Students share:
+
+* Saving hacks
+* Budgeting tips
+* Cheap meal ideas
+* Student discounts
+
+---
+
+# Advanced AI Features
+
+## 28. Receipt Scanner
+
+### Description
+
+Automatically scan and categorize expenses.
+
+### Features
+
+* OCR extraction
+* Auto categorization
+* Digital receipt storage
+
+---
+
+## 29. Spending Emotion Tracker
+
+### Description
+
+Track emotional spending patterns.
+
+### Mood Options
+
+* Happy
+* Stressed
+* Bored
+* Excited
+* Sad
+
+### AI Analysis
+
+Identify emotional triggers for overspending.
+
+---
+
+## 30. Smart Spending Freeze
+
+### Description
+
+When users approach budget limits:
+
+* Trigger warnings
+* Restrict selected spending categories
+* Suggest cheaper alternatives
+
+---
+
+## 31. Campus Cost Benchmarking
+
+### Description
+
+Compare spending against students with similar profiles.
+
+### Comparison Metrics
+
+* Food expenses
+* Transportation costs
+* Savings rates
+* Entertainment spending
+
+---
+
+# Non-Functional Requirements
+
+## Security
+
+* Data encryption
+* Multi-factor authentication
+* Secure cloud storage
+* PDPA/GDPR compliance
+
+## Performance
+
+* Dashboard load time < 2 seconds
+* Real-time updates
+* Support 100,000+ concurrent users
+
+## Platforms
+
+* iOS
+* Android
+* Web Application
+
+---
+
+# Key Performance Indicators (KPIs)
+
+## User Engagement
+
+* Daily Active Users (DAU)
+* Monthly Active Users (MAU)
+* User Retention Rate
+
+## Financial Outcomes
+
+* Average Savings Increase
+* Budget Compliance Rate
+* Goal Completion Rate
+
+## Product Metrics
+
+* Expense Logs Per User
+* AI Coach Usage
+* Financial Course Completion
+* Savings Challenge Participation
+
+---
+
+# MVP Scope (Phase 1)
+
+### Included
+
+✅ Expense Tracking
+
+✅ Receipt Scanner
+
+✅ Smart Budget Planner
+
+✅ Savings Goals
+
+✅ Spending Dashboard
+
+✅ Financial Health Score
+
+✅ Smart Alerts
+
+✅ Spending Forecast
+
+✅ Savings Challenges
+
+✅ Achievement System
+
+### Phase 2
+
+* AI Financial Coach
+* Subscription Tracker
+* Cash Flow Calendar
+* Shared Expenses
+* Student Discounts Hub
+
+### Phase 3
+
+* Savings Circles
+* Community Feed
+* Campus Benchmarking
+* Textbook Marketplace
+* Smart Spending Freeze
+
+---
+
+# Future Vision
+
+SmartSave Student will evolve into a complete Student Financial Wellness Ecosystem that combines personal finance management, financial education, AI coaching, community engagement, and student lifestyle support to help students achieve long-term financial independence.

@@ -3,20 +3,31 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SmartSave Student API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: expenses
+    description: Expense tracking
+  - name: budgets
+    description: Budget management
+  - name: goals
+    description: Savings goals
+  - name: challenges
+    description: Savings challenges
+  - name: achievements
+    description: Achievement system
+  - name: dashboard
+    description: Dashboard & analytics
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +35,449 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── Expenses ──────────────────────────────────────────────────────────────
+  /expenses:
+    get:
+      operationId: listExpenses
+      tags: [expenses]
+      summary: List all expenses
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: month
+          in: query
+          description: "Format: YYYY-MM"
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of expenses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Expense"
+    post:
+      operationId: createExpense
+      tags: [expenses]
+      summary: Create an expense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+
+  /expenses/{id}:
+    get:
+      operationId: getExpense
+      tags: [expenses]
+      summary: Get an expense
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Expense
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateExpense
+      tags: [expenses]
+      summary: Update an expense
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+    delete:
+      operationId: deleteExpense
+      tags: [expenses]
+      summary: Delete an expense
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Budgets ───────────────────────────────────────────────────────────────
+  /budgets:
+    get:
+      operationId: listBudgets
+      tags: [budgets]
+      summary: List budgets
+      parameters:
+        - name: month
+          in: query
+          description: "Format: YYYY-MM"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of budgets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Budget"
+    post:
+      operationId: createBudget
+      tags: [budgets]
+      summary: Create a budget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BudgetInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+
+  /budgets/{id}:
+    patch:
+      operationId: updateBudget
+      tags: [budgets]
+      summary: Update a budget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BudgetUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+    delete:
+      operationId: deleteBudget
+      tags: [budgets]
+      summary: Delete a budget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Savings Goals ─────────────────────────────────────────────────────────
+  /goals:
+    get:
+      operationId: listGoals
+      tags: [goals]
+      summary: List savings goals
+      responses:
+        "200":
+          description: List of goals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SavingsGoal"
+    post:
+      operationId: createGoal
+      tags: [goals]
+      summary: Create a savings goal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SavingsGoalInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavingsGoal"
+
+  /goals/{id}:
+    patch:
+      operationId: updateGoal
+      tags: [goals]
+      summary: Update a savings goal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SavingsGoalUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavingsGoal"
+    delete:
+      operationId: deleteGoal
+      tags: [goals]
+      summary: Delete a savings goal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /goals/{id}/contribute:
+    post:
+      operationId: contributeToGoal
+      tags: [goals]
+      summary: Add funds to a savings goal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoalContribution"
+      responses:
+        "200":
+          description: Updated goal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavingsGoal"
+
+  # ── Challenges ────────────────────────────────────────────────────────────
+  /challenges:
+    get:
+      operationId: listChallenges
+      tags: [challenges]
+      summary: List savings challenges
+      responses:
+        "200":
+          description: List of challenges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Challenge"
+    post:
+      operationId: createChallenge
+      tags: [challenges]
+      summary: Create a challenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChallengeInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Challenge"
+
+  /challenges/{id}:
+    patch:
+      operationId: updateChallenge
+      tags: [challenges]
+      summary: Update a challenge
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChallengeUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Challenge"
+
+  # ── Achievements ──────────────────────────────────────────────────────────
+  /achievements:
+    get:
+      operationId: listAchievements
+      tags: [achievements]
+      summary: List all achievements
+      responses:
+        "200":
+          description: List of achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Achievement"
+
+  # ── Dashboard & Analytics ─────────────────────────────────────────────────
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Dashboard summary for current month
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/health-score:
+    get:
+      operationId: getHealthScore
+      tags: [dashboard]
+      summary: Financial health score (0-100)
+      responses:
+        "200":
+          description: Health score
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthScore"
+
+  /dashboard/spending-by-category:
+    get:
+      operationId: getSpendingByCategory
+      tags: [dashboard]
+      summary: Spending breakdown by category for a month
+      parameters:
+        - name: month
+          in: query
+          description: "Format: YYYY-MM"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Category spending breakdown
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategorySpending"
+
+  /dashboard/monthly-trend:
+    get:
+      operationId: getMonthlyTrend
+      tags: [dashboard]
+      summary: Monthly spending trend for last 6 months
+      responses:
+        "200":
+          description: Monthly trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MonthlyTrend"
+
+  /dashboard/forecast:
+    get:
+      operationId: getSpendingForecast
+      tags: [dashboard]
+      summary: End-of-month spending forecast
+      responses:
+        "200":
+          description: Spending forecast
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpendingForecast"
+
+  /dashboard/alerts:
+    get:
+      operationId: getAlerts
+      tags: [dashboard]
+      summary: Active smart alerts
+      responses:
+        "200":
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alert"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +488,340 @@ components:
       required:
         - status
 
+    # ── Expense ──────────────────────────────────────────────────────────────
+    Expense:
+      type: object
+      required: [id, amount, category, description, date, createdAt]
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        category:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        mood:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ExpenseInput:
+      type: object
+      required: [amount, category, description, date]
+      properties:
+        amount:
+          type: number
+        category:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        mood:
+          type: string
+
+    ExpenseUpdate:
+      type: object
+      properties:
+        amount:
+          type: number
+        category:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        mood:
+          type: string
+
+    # ── Budget ───────────────────────────────────────────────────────────────
+    Budget:
+      type: object
+      required: [id, category, monthlyLimit, currentSpend, month]
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        monthlyLimit:
+          type: number
+        currentSpend:
+          type: number
+        month:
+          type: string
+        percentUsed:
+          type: number
+        isOverBudget:
+          type: boolean
+
+    BudgetInput:
+      type: object
+      required: [category, monthlyLimit, month]
+      properties:
+        category:
+          type: string
+        monthlyLimit:
+          type: number
+        month:
+          type: string
+
+    BudgetUpdate:
+      type: object
+      properties:
+        monthlyLimit:
+          type: number
+
+    # ── Savings Goal ─────────────────────────────────────────────────────────
+    SavingsGoal:
+      type: object
+      required: [id, name, targetAmount, currentAmount, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        targetAmount:
+          type: number
+        currentAmount:
+          type: number
+        deadline:
+          type: ["string", "null"]
+          format: date
+        icon:
+          type: string
+        percentComplete:
+          type: number
+        isCompleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    SavingsGoalInput:
+      type: object
+      required: [name, targetAmount]
+      properties:
+        name:
+          type: string
+        targetAmount:
+          type: number
+        deadline:
+          type: string
+          format: date
+        icon:
+          type: string
+
+    SavingsGoalUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        targetAmount:
+          type: number
+        deadline:
+          type: string
+          format: date
+        icon:
+          type: string
+
+    GoalContribution:
+      type: object
+      required: [amount]
+      properties:
+        amount:
+          type: number
+
+    # ── Challenge ────────────────────────────────────────────────────────────
+    Challenge:
+      type: object
+      required: [id, name, description, targetAmount, currentAmount, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        targetAmount:
+          type: number
+        currentAmount:
+          type: number
+        startDate:
+          type: ["string", "null"]
+          format: date
+        endDate:
+          type: ["string", "null"]
+          format: date
+        status:
+          type: string
+        xpReward:
+          type: integer
+        percentComplete:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+
+    ChallengeInput:
+      type: object
+      required: [name, description, targetAmount]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        targetAmount:
+          type: number
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        xpReward:
+          type: integer
+
+    ChallengeUpdate:
+      type: object
+      properties:
+        currentAmount:
+          type: number
+        status:
+          type: string
+
+    # ── Achievement ──────────────────────────────────────────────────────────
+    Achievement:
+      type: object
+      required: [id, name, description, icon, isUnlocked]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        isUnlocked:
+          type: boolean
+        unlockedAt:
+          type: ["string", "null"]
+          format: date-time
+        xpValue:
+          type: integer
+
+    # ── Dashboard ────────────────────────────────────────────────────────────
+    DashboardSummary:
+      type: object
+      required: [totalSpentThisMonth, totalBudget, totalSaved, budgetRemaining, expenseCount, healthScore, xpTotal, level]
+      properties:
+        totalSpentThisMonth:
+          type: number
+        totalBudget:
+          type: number
+        totalSaved:
+          type: number
+        budgetRemaining:
+          type: number
+        expenseCount:
+          type: integer
+        healthScore:
+          type: integer
+        xpTotal:
+          type: integer
+        level:
+          type: integer
+        topCategory:
+          type: ["string", "null"]
+        recentExpenses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Expense"
+
+    HealthScore:
+      type: object
+      required: [score, savingsRate, budgetAdherence, goalAchievement, spendingConsistency]
+      properties:
+        score:
+          type: integer
+        savingsRate:
+          type: number
+        budgetAdherence:
+          type: number
+        goalAchievement:
+          type: number
+        spendingConsistency:
+          type: number
+        grade:
+          type: string
+        tip:
+          type: string
+
+    CategorySpending:
+      type: object
+      required: [category, amount, percentage, budget]
+      properties:
+        category:
+          type: string
+        amount:
+          type: number
+        percentage:
+          type: number
+        budget:
+          type: number
+        isOverBudget:
+          type: boolean
+
+    MonthlyTrend:
+      type: object
+      required: [month, totalSpent, totalBudget, totalSaved]
+      properties:
+        month:
+          type: string
+        totalSpent:
+          type: number
+        totalBudget:
+          type: number
+        totalSaved:
+          type: number
+
+    SpendingForecast:
+      type: object
+      required: [predictedMonthlySpend, currentMonthSpend, daysLeft, dailyAverage, projectedSavings]
+      properties:
+        predictedMonthlySpend:
+          type: number
+        currentMonthSpend:
+          type: number
+        daysLeft:
+          type: integer
+        dailyAverage:
+          type: number
+        projectedSavings:
+          type: number
+        overspendingRisk:
+          type: string
+        recommendation:
+          type: string
+
+    Alert:
+      type: object
+      required: [id, type, message, severity]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        message:
+          type: string
+        severity:
+          type: string
+        category:
+          type: ["string", "null"]

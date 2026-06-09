@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "SmartSave Student"
+version = "1.0.0"
+id = "artifacts/smartsave"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21566
+
+[services.development]
+run = "pnpm --filter @workspace/smartsave run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/smartsave", "run", "build" ]
+publicDir = "artifacts/smartsave/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21566"
+BASE_PATH = "/"
