@@ -22,6 +22,8 @@ tags:
     description: Achievement system
   - name: dashboard
     description: Dashboard & analytics
+  - name: settings
+    description: User settings & preferences
 paths:
   /healthz:
     get:
@@ -478,6 +480,37 @@ paths:
                 items:
                   $ref: "#/components/schemas/Alert"
 
+  # ── Settings ──────────────────────────────────────────────────────────────
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get user settings
+      responses:
+        "200":
+          description: User settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSettings"
+    put:
+      operationId: updateSettings
+      tags: [settings]
+      summary: Update user settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsUpdate"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSettings"
+
 components:
   schemas:
     HealthStatus:
@@ -825,3 +858,44 @@ components:
           type: string
         category:
           type: ["string", "null"]
+
+    # ── Settings ─────────────────────────────────────────────────────────────
+    UserSettings:
+      type: object
+      required: [id, userId, moneyPersonality, savingsAggressiveness, budgetAlertThreshold, weeklyDigest, currency, updatedAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        moneyPersonality:
+          type: string
+        savingsAggressiveness:
+          type: string
+        budgetAlertThreshold:
+          type: integer
+        weeklyDigest:
+          type: boolean
+        displayName:
+          type: ["string", "null"]
+        currency:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+
+    SettingsUpdate:
+      type: object
+      properties:
+        moneyPersonality:
+          type: string
+        savingsAggressiveness:
+          type: string
+        budgetAlertThreshold:
+          type: integer
+        weeklyDigest:
+          type: boolean
+        displayName:
+          type: ["string", "null"]
+        currency:
+          type: string

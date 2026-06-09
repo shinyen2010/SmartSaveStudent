@@ -186,6 +186,29 @@ export interface Alert {
   category?: string | null;
 }
 
+export interface UserSettings {
+  id: number;
+  userId: string;
+  moneyPersonality: string;
+  savingsAggressiveness: string;
+  budgetAlertThreshold: number;
+  weeklyDigest: boolean;
+  /** @nullable */
+  displayName?: string | null;
+  currency: string;
+  updatedAt: string;
+}
+
+export interface SettingsUpdate {
+  moneyPersonality?: string;
+  savingsAggressiveness?: string;
+  budgetAlertThreshold?: number;
+  weeklyDigest?: boolean;
+  /** @nullable */
+  displayName?: string | null;
+  currency?: string;
+}
+
 export type ListExpensesParams = {
 category?: string;
 /**

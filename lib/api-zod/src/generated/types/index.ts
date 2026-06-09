@@ -29,4 +29,6 @@ export * from './monthlyTrend';
 export * from './savingsGoal';
 export * from './savingsGoalInput';
 export * from './savingsGoalUpdate';
+export * from './settingsUpdate';
 export * from './spendingForecast';
+export * from './userSettings';

@@ -416,3 +416,44 @@ export const GetAlertsResponseItem = zod.object({
 export const GetAlertsResponse = zod.array(GetAlertsResponseItem)
 
 
+/**
+ * @summary Get user settings
+ */
+export const GetSettingsResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.string(),
+  "moneyPersonality": zod.string(),
+  "savingsAggressiveness": zod.string(),
+  "budgetAlertThreshold": zod.number(),
+  "weeklyDigest": zod.boolean(),
+  "displayName": zod.string().nullish(),
+  "currency": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update user settings
+ */
+export const UpdateSettingsBody = zod.object({
+  "moneyPersonality": zod.string().optional(),
+  "savingsAggressiveness": zod.string().optional(),
+  "budgetAlertThreshold": zod.number().optional(),
+  "weeklyDigest": zod.boolean().optional(),
+  "displayName": zod.string().nullish(),
+  "currency": zod.string().optional()
+})
+
+export const UpdateSettingsResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.string(),
+  "moneyPersonality": zod.string(),
+  "savingsAggressiveness": zod.string(),
+  "budgetAlertThreshold": zod.number(),
+  "weeklyDigest": zod.boolean(),
+  "displayName": zod.string().nullish(),
+  "currency": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+
+

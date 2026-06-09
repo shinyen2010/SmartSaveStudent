@@ -14,7 +14,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Receipt, PieChart, Target, Trophy, TrendingUp, LogOut } from "lucide-react";
+import { LayoutDashboard, Receipt, PieChart, Target, Trophy, TrendingUp, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -31,6 +31,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     { title: "Goals", icon: Target, path: "/goals" },
     { title: "Challenges", icon: Trophy, path: "/challenges" },
     { title: "Insights", icon: TrendingUp, path: "/insights" },
+    { title: "Settings", icon: Settings, path: "/settings" },
   ];
 
   const initials = isLoaded && user

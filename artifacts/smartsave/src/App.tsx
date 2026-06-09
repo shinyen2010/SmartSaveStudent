@@ -15,6 +15,7 @@ import Expenses from "./pages/expenses";
 import Budget from "./pages/budget";
 import Challenges from "./pages/challenges";
 import Insights from "./pages/insights";
+import SettingsPage from "./pages/settings";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -197,6 +198,7 @@ function ClerkProviderWithRoutes() {
             <Route path="/goals" component={() => <ProtectedRoute component={Goals} />} />
             <Route path="/challenges" component={() => <ProtectedRoute component={Challenges} />} />
             <Route path="/insights" component={() => <ProtectedRoute component={Insights} />} />
+            <Route path="/settings" component={() => <ProtectedRoute component={SettingsPage} />} />
             <Route component={NotFound} />
           </Switch>
           <Toaster />
