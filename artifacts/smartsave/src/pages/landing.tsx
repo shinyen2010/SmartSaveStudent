@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 import { TrendingUp, Target, PieChart, Trophy, Zap, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,9 +33,7 @@ export default function Landing() {
           <Button variant="ghost" asChild>
             <Link href="/sign-in">Sign In</Link>
           </Button>
-          <Button asChild className="rounded-full">
-            <Link href="/sign-up">Get Started</Link>
-          </Button>
+          <PulseButton href="/sign-up" label="Get Started" />
         </div>
       </nav>
 
@@ -50,12 +49,8 @@ export default function Landing() {
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
           SmartSave Student is the personal finance companion that helps you track every ringgit, hit your savings goals, and build money habits that actually stick.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" className="rounded-full px-8 text-lg h-14 shadow-lg" asChild>
-            <Link href="/sign-up">
-              Start for Free <ArrowRight className="ml-2" size={18} />
-            </Link>
-          </Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <PulseButton href="/sign-up" label="Start for Free" icon={<ArrowRight size={18} />} large />
           <Button size="lg" variant="outline" className="rounded-full px-8 text-lg h-14" asChild>
             <Link href="/sign-in">Sign In</Link>
           </Button>
@@ -95,9 +90,7 @@ export default function Landing() {
         <div className="bg-primary rounded-3xl p-12 max-w-2xl mx-auto text-primary-foreground">
           <h2 className="text-3xl font-black mb-4">Ready to take control?</h2>
           <p className="opacity-80 mb-8 text-lg">Join students who are already saving smarter every day.</p>
-          <Button size="lg" className="rounded-full px-10 bg-white text-primary hover:bg-white/90 font-bold text-lg h-14" asChild>
-            <Link href="/sign-up">Create Free Account</Link>
-          </Button>
+          <PulseButton href="/sign-up" label="Create Free Account" inverted large />
         </div>
       </section>
 
@@ -112,5 +105,58 @@ export default function Landing() {
         <p>Spend Wisely. Save Smarter.</p>
       </footer>
     </div>
+  );
+}
+
+function PulseButton({
+  href,
+  label,
+  icon,
+  large = false,
+  inverted = false,
+}: {
+  href: string;
+  label: string;
+  icon?: React.ReactNode;
+  large?: boolean;
+  inverted?: boolean;
+}) {
+  return (
+    <Link href={href} className="relative inline-flex">
+      {/* Pulsing ring behind button */}
+      <motion.span
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: inverted
+            ? "rgba(255,255,255,0.5)"
+            : "hsl(260,90%,60%)",
+        }}
+        animate={{ scale: [1, 1.18, 1], opacity: [0.55, 0, 0.55] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.button
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className={[
+          "relative inline-flex items-center gap-2 font-bold rounded-full cursor-pointer overflow-hidden",
+          large ? "px-8 text-lg h-14" : "px-5 text-sm h-10",
+          inverted
+            ? "bg-white text-primary hover:bg-white/90"
+            : "bg-primary text-primary-foreground shadow-lg",
+        ].join(" ")}
+      >
+        {/* Shimmer sweep */}
+        <motion.span
+          className="absolute inset-0 -skew-x-12 bg-white/20"
+          animate={{ x: ["-120%", "220%"] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.8 }}
+        />
+        <span className="relative z-10 flex items-center gap-2">
+          {label}
+          {icon && icon}
+        </span>
+      </motion.button>
+    </Link>
   );
 }
