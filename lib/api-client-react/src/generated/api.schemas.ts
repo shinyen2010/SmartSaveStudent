@@ -209,6 +209,43 @@ export interface SettingsUpdate {
   currency?: string;
 }
 
+export interface WalletBalance {
+  balance: number;
+  totalTopUps: number;
+  totalSpent: number;
+  totalTransferred: number;
+}
+
+export interface WalletTransaction {
+  id: number;
+  type: string;
+  amount: number;
+  description: string;
+  /** @nullable */
+  category?: string | null;
+  referenceNo: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface WalletTopUpInput {
+  amount: number;
+  method?: string;
+}
+
+export interface WalletPayInput {
+  amount: number;
+  description: string;
+  category?: string;
+  createExpense?: boolean;
+}
+
+export interface WalletTransferInput {
+  amount: number;
+  recipient: string;
+  note?: string;
+}
+
 export type ListExpensesParams = {
 category?: string;
 /**
@@ -230,5 +267,9 @@ export type GetSpendingByCategoryParams = {
  * Format: YYYY-MM
  */
 month?: string;
+};
+
+export type ListWalletTransactionsParams = {
+limit?: number;
 };
 

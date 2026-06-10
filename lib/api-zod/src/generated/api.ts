@@ -457,3 +457,64 @@ export const UpdateSettingsResponse = zod.object({
 })
 
 
+/**
+ * @summary Get current wallet balance
+ */
+export const GetWalletBalanceResponse = zod.object({
+  "balance": zod.number(),
+  "totalTopUps": zod.number(),
+  "totalSpent": zod.number(),
+  "totalTransferred": zod.number()
+})
+
+
+/**
+ * @summary List wallet transactions
+ */
+export const ListWalletTransactionsQueryParams = zod.object({
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListWalletTransactionsResponseItem = zod.object({
+  "id": zod.number(),
+  "type": zod.string(),
+  "amount": zod.number(),
+  "description": zod.string(),
+  "category": zod.string().nullish(),
+  "referenceNo": zod.string(),
+  "status": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const ListWalletTransactionsResponse = zod.array(ListWalletTransactionsResponseItem)
+
+
+/**
+ * @summary Top up wallet
+ */
+export const WalletTopUpBody = zod.object({
+  "amount": zod.number(),
+  "method": zod.string().optional()
+})
+
+
+/**
+ * @summary Make a payment from wallet
+ */
+export const WalletPayBody = zod.object({
+  "amount": zod.number(),
+  "description": zod.string(),
+  "category": zod.string().optional(),
+  "createExpense": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Transfer funds to another user
+ */
+export const WalletTransferBody = zod.object({
+  "amount": zod.number(),
+  "recipient": zod.string(),
+  "note": zod.string().optional()
+})
+
+

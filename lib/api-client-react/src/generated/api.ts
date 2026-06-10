@@ -39,13 +39,19 @@ import type {
   HealthStatus,
   ListBudgetsParams,
   ListExpensesParams,
+  ListWalletTransactionsParams,
   MonthlyTrend,
   SavingsGoal,
   SavingsGoalInput,
   SavingsGoalUpdate,
   SettingsUpdate,
   SpendingForecast,
-  UserSettings
+  UserSettings,
+  WalletBalance,
+  WalletPayInput,
+  WalletTopUpInput,
+  WalletTransaction,
+  WalletTransferInput
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -2082,5 +2088,379 @@ export const useUpdateSettings = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getUpdateSettingsMutationOptions(options));
+    }
+
+export const getGetWalletBalanceUrl = () => {
+
+
+
+
+  return `/api/wallet/balance`
+}
+
+/**
+ * @summary Get current wallet balance
+ */
+export const getWalletBalance = async ( options?: RequestInit): Promise<WalletBalance> => {
+
+  return customFetch<WalletBalance>(getGetWalletBalanceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetWalletBalanceQueryKey = () => {
+    return [
+    `/api/wallet/balance`
+    ] as const;
+    }
+
+
+export const getGetWalletBalanceQueryOptions = <TData = Awaited<ReturnType<typeof getWalletBalance>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWalletBalance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetWalletBalanceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWalletBalance>>> = ({ signal }) => getWalletBalance({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWalletBalance>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetWalletBalanceQueryResult = NonNullable<Awaited<ReturnType<typeof getWalletBalance>>>
+export type GetWalletBalanceQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get current wallet balance
+ */
+
+export function useGetWalletBalance<TData = Awaited<ReturnType<typeof getWalletBalance>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWalletBalance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetWalletBalanceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getListWalletTransactionsUrl = (params?: ListWalletTransactionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/wallet/transactions?${stringifiedParams}` : `/api/wallet/transactions`
+}
+
+/**
+ * @summary List wallet transactions
+ */
+export const listWalletTransactions = async (params?: ListWalletTransactionsParams, options?: RequestInit): Promise<WalletTransaction[]> => {
+
+  return customFetch<WalletTransaction[]>(getListWalletTransactionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListWalletTransactionsQueryKey = (params?: ListWalletTransactionsParams,) => {
+    return [
+    `/api/wallet/transactions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListWalletTransactionsQueryOptions = <TData = Awaited<ReturnType<typeof listWalletTransactions>>, TError = ErrorType<unknown>>(params?: ListWalletTransactionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listWalletTransactions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListWalletTransactionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listWalletTransactions>>> = ({ signal }) => listWalletTransactions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listWalletTransactions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListWalletTransactionsQueryResult = NonNullable<Awaited<ReturnType<typeof listWalletTransactions>>>
+export type ListWalletTransactionsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List wallet transactions
+ */
+
+export function useListWalletTransactions<TData = Awaited<ReturnType<typeof listWalletTransactions>>, TError = ErrorType<unknown>>(
+ params?: ListWalletTransactionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listWalletTransactions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListWalletTransactionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getWalletTopUpUrl = () => {
+
+
+
+
+  return `/api/wallet/topup`
+}
+
+/**
+ * @summary Top up wallet
+ */
+export const walletTopUp = async (walletTopUpInput: WalletTopUpInput, options?: RequestInit): Promise<WalletTransaction> => {
+
+  return customFetch<WalletTransaction>(getWalletTopUpUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      walletTopUpInput,)
+  }
+);}
+
+
+
+
+export const getWalletTopUpMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletTopUp>>, TError,{data: BodyType<WalletTopUpInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof walletTopUp>>, TError,{data: BodyType<WalletTopUpInput>}, TContext> => {
+
+const mutationKey = ['walletTopUp'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof walletTopUp>>, {data: BodyType<WalletTopUpInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  walletTopUp(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WalletTopUpMutationResult = NonNullable<Awaited<ReturnType<typeof walletTopUp>>>
+    export type WalletTopUpMutationBody = BodyType<WalletTopUpInput>
+    export type WalletTopUpMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Top up wallet
+ */
+export const useWalletTopUp = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletTopUp>>, TError,{data: BodyType<WalletTopUpInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof walletTopUp>>,
+        TError,
+        {data: BodyType<WalletTopUpInput>},
+        TContext
+      > => {
+      return useMutation(getWalletTopUpMutationOptions(options));
+    }
+
+export const getWalletPayUrl = () => {
+
+
+
+
+  return `/api/wallet/pay`
+}
+
+/**
+ * @summary Make a payment from wallet
+ */
+export const walletPay = async (walletPayInput: WalletPayInput, options?: RequestInit): Promise<WalletTransaction> => {
+
+  return customFetch<WalletTransaction>(getWalletPayUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      walletPayInput,)
+  }
+);}
+
+
+
+
+export const getWalletPayMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletPay>>, TError,{data: BodyType<WalletPayInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof walletPay>>, TError,{data: BodyType<WalletPayInput>}, TContext> => {
+
+const mutationKey = ['walletPay'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof walletPay>>, {data: BodyType<WalletPayInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  walletPay(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WalletPayMutationResult = NonNullable<Awaited<ReturnType<typeof walletPay>>>
+    export type WalletPayMutationBody = BodyType<WalletPayInput>
+    export type WalletPayMutationError = ErrorType<void>
+
+    /**
+ * @summary Make a payment from wallet
+ */
+export const useWalletPay = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletPay>>, TError,{data: BodyType<WalletPayInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof walletPay>>,
+        TError,
+        {data: BodyType<WalletPayInput>},
+        TContext
+      > => {
+      return useMutation(getWalletPayMutationOptions(options));
+    }
+
+export const getWalletTransferUrl = () => {
+
+
+
+
+  return `/api/wallet/transfer`
+}
+
+/**
+ * @summary Transfer funds to another user
+ */
+export const walletTransfer = async (walletTransferInput: WalletTransferInput, options?: RequestInit): Promise<WalletTransaction> => {
+
+  return customFetch<WalletTransaction>(getWalletTransferUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      walletTransferInput,)
+  }
+);}
+
+
+
+
+export const getWalletTransferMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletTransfer>>, TError,{data: BodyType<WalletTransferInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof walletTransfer>>, TError,{data: BodyType<WalletTransferInput>}, TContext> => {
+
+const mutationKey = ['walletTransfer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof walletTransfer>>, {data: BodyType<WalletTransferInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  walletTransfer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WalletTransferMutationResult = NonNullable<Awaited<ReturnType<typeof walletTransfer>>>
+    export type WalletTransferMutationBody = BodyType<WalletTransferInput>
+    export type WalletTransferMutationError = ErrorType<void>
+
+    /**
+ * @summary Transfer funds to another user
+ */
+export const useWalletTransfer = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof walletTransfer>>, TError,{data: BodyType<WalletTransferInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof walletTransfer>>,
+        TError,
+        {data: BodyType<WalletTransferInput>},
+        TContext
+      > => {
+      return useMutation(getWalletTransferMutationOptions(options));
     }
 

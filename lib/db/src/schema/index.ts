@@ -4,3 +4,4 @@ export * from "./goals";
 export * from "./challenges";
 export * from "./achievements";
 export * from "./settings";
+export * from "./wallet";

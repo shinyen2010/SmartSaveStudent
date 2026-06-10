@@ -24,6 +24,8 @@ tags:
     description: Dashboard & analytics
   - name: settings
     description: User settings & preferences
+  - name: wallet
+    description: Digital wallet (top up, pay, transfer)
 paths:
   /healthz:
     get:
@@ -511,6 +513,101 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserSettings"
 
+  # ── Wallet ────────────────────────────────────────────────────────────────
+  /wallet/balance:
+    get:
+      operationId: getWalletBalance
+      tags: [wallet]
+      summary: Get current wallet balance
+      responses:
+        "200":
+          description: Wallet balance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletBalance"
+
+  /wallet/transactions:
+    get:
+      operationId: listWalletTransactions
+      tags: [wallet]
+      summary: List wallet transactions
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WalletTransaction"
+
+  /wallet/topup:
+    post:
+      operationId: walletTopUp
+      tags: [wallet]
+      summary: Top up wallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WalletTopUpInput"
+      responses:
+        "201":
+          description: Top-up transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletTransaction"
+
+  /wallet/pay:
+    post:
+      operationId: walletPay
+      tags: [wallet]
+      summary: Make a payment from wallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WalletPayInput"
+      responses:
+        "201":
+          description: Payment transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletTransaction"
+        "400":
+          description: Insufficient balance
+
+  /wallet/transfer:
+    post:
+      operationId: walletTransfer
+      tags: [wallet]
+      summary: Transfer funds to another user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WalletTransferInput"
+      responses:
+        "201":
+          description: Transfer transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletTransaction"
+        "400":
+          description: Insufficient balance
+
 components:
   schemas:
     HealthStatus:
@@ -898,4 +995,73 @@ components:
         displayName:
           type: ["string", "null"]
         currency:
+          type: string
+
+    # ── Wallet ────────────────────────────────────────────────────────────────
+    WalletBalance:
+      type: object
+      required: [balance, totalTopUps, totalSpent, totalTransferred]
+      properties:
+        balance:
+          type: number
+        totalTopUps:
+          type: number
+        totalSpent:
+          type: number
+        totalTransferred:
+          type: number
+
+    WalletTransaction:
+      type: object
+      required: [id, type, amount, description, referenceNo, status, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        amount:
+          type: number
+        description:
+          type: string
+        category:
+          type: ["string", "null"]
+        referenceNo:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    WalletTopUpInput:
+      type: object
+      required: [amount]
+      properties:
+        amount:
+          type: number
+        method:
+          type: string
+
+    WalletPayInput:
+      type: object
+      required: [amount, description]
+      properties:
+        amount:
+          type: number
+        description:
+          type: string
+        category:
+          type: string
+        createExpense:
+          type: boolean
+
+    WalletTransferInput:
+      type: object
+      required: [amount, recipient]
+      properties:
+        amount:
+          type: number
+        recipient:
+          type: string
+        note:
           type: string

@@ -14,7 +14,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Receipt, PieChart, Target, Trophy, TrendingUp, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, Receipt, PieChart, Target, Trophy, TrendingUp, LogOut, Settings, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -26,6 +26,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   const menuItems = [
     { title: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { title: "Wallet", icon: Wallet, path: "/wallet" },
     { title: "Expenses", icon: Receipt, path: "/expenses" },
     { title: "Budget", icon: PieChart, path: "/budget" },
     { title: "Goals", icon: Target, path: "/goals" },

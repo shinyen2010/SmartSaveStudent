@@ -7,6 +7,7 @@ import challengesRouter from "./challenges";
 import achievementsRouter from "./achievements";
 import dashboardRouter from "./dashboard";
 import settingsRouter from "./settings";
+import walletRouter from "./wallet";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(challengesRouter);
 router.use(achievementsRouter);
 router.use(dashboardRouter);
 router.use(settingsRouter);
+router.use(walletRouter);
 
 export default router;
