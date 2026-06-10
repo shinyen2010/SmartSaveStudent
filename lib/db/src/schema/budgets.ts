@@ -4,12 +4,13 @@ import { z } from "zod/v4";
 
 export const budgetsTable = pgTable("budgets", {
   id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().default("legacy"),
   category: text("category").notNull(),
   monthlyLimit: numeric("monthly_limit", { precision: 10, scale: 2 }).notNull(),
   month: text("month").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertBudgetSchema = createInsertSchema(budgetsTable).omit({ id: true, createdAt: true });
+export const insertBudgetSchema = createInsertSchema(budgetsTable).omit({ id: true, createdAt: true, userId: true });
 export type InsertBudget = z.infer<typeof insertBudgetSchema>;
 export type Budget = typeof budgetsTable.$inferSelect;

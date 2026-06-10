@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const challengesTable = pgTable("challenges", {
   id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().default("legacy"),
   name: text("name").notNull(),
   description: text("description").notNull(),
   targetAmount: numeric("target_amount", { precision: 10, scale: 2 }).notNull(),
@@ -15,6 +16,6 @@ export const challengesTable = pgTable("challenges", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertChallengeSchema = createInsertSchema(challengesTable).omit({ id: true, createdAt: true });
+export const insertChallengeSchema = createInsertSchema(challengesTable).omit({ id: true, createdAt: true, userId: true });
 export type InsertChallenge = z.infer<typeof insertChallengeSchema>;
 export type Challenge = typeof challengesTable.$inferSelect;

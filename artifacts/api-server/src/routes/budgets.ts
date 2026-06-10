@@ -2,108 +2,68 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { budgetsTable, expensesTable } from "@workspace/db";
 import { eq, and, sql } from "drizzle-orm";
-import {
-  CreateBudgetBody,
-  UpdateBudgetBody,
-  ListBudgetsQueryParams,
-} from "@workspace/api-zod";
+import { CreateBudgetBody, UpdateBudgetBody, ListBudgetsQueryParams } from "@workspace/api-zod";
+import { requireAuth, type AuthedRequest } from "../middlewares/requireAuth";
 
 const router = Router();
 
-router.get("/budgets", async (req, res) => {
+router.get("/budgets", requireAuth, async (req, res) => {
+  const userId = (req as AuthedRequest).userId;
   const parsed = ListBudgetsQueryParams.safeParse(req.query);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid query params" });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: "Invalid query params" }); return; }
   const month = parsed.data.month ?? new Date().toISOString().slice(0, 7);
 
-  const budgets = await db
-    .select()
-    .from(budgetsTable)
-    .where(eq(budgetsTable.month, month));
+  const budgets = await db.select().from(budgetsTable)
+    .where(and(eq(budgetsTable.userId, userId), eq(budgetsTable.month, month)));
 
   const result = await Promise.all(
     budgets.map(async (b) => {
       const [{ total }] = await db
         .select({ total: sql<string>`coalesce(sum(${expensesTable.amount}), 0)` })
         .from(expensesTable)
-        .where(
-          and(
-            eq(expensesTable.category, b.category),
-            sql`to_char(${expensesTable.date}::date, 'YYYY-MM') = ${b.month}`
-          )
-        );
+        .where(and(
+          eq(expensesTable.userId, userId),
+          eq(expensesTable.category, b.category),
+          sql`to_char(${expensesTable.date}::date, 'YYYY-MM') = ${b.month}`
+        ));
       const currentSpend = Number(total);
       const monthlyLimit = Number(b.monthlyLimit);
       const percentUsed = monthlyLimit > 0 ? (currentSpend / monthlyLimit) * 100 : 0;
-      return {
-        ...b,
-        monthlyLimit,
-        currentSpend,
-        percentUsed: Math.round(percentUsed * 10) / 10,
-        isOverBudget: currentSpend > monthlyLimit,
-        createdAt: b.createdAt.toISOString(),
-      };
+      return { ...b, monthlyLimit, currentSpend, percentUsed: Math.round(percentUsed * 10) / 10, isOverBudget: currentSpend > monthlyLimit, createdAt: b.createdAt.toISOString() };
     })
   );
-
   res.json(result);
 });
 
-router.post("/budgets", async (req, res) => {
+router.post("/budgets", requireAuth, async (req, res) => {
+  const userId = (req as AuthedRequest).userId;
   const parsed = CreateBudgetBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid body" });
-    return;
-  }
-  const [row] = await db
-    .insert(budgetsTable)
-    .values({
-      category: parsed.data.category,
-      monthlyLimit: String(parsed.data.monthlyLimit),
-      month: parsed.data.month,
-    })
-    .returning();
-  res.status(201).json({
-    ...row,
-    monthlyLimit: Number(row.monthlyLimit),
-    currentSpend: 0,
-    percentUsed: 0,
-    isOverBudget: false,
-    createdAt: row.createdAt.toISOString(),
-  });
+  if (!parsed.success) { res.status(400).json({ error: "Invalid body" }); return; }
+  const [row] = await db.insert(budgetsTable).values({
+    userId,
+    category: parsed.data.category,
+    monthlyLimit: String(parsed.data.monthlyLimit),
+    month: parsed.data.month,
+  }).returning();
+  res.status(201).json({ ...row, monthlyLimit: Number(row.monthlyLimit), currentSpend: 0, percentUsed: 0, isOverBudget: false, createdAt: row.createdAt.toISOString() });
 });
 
-router.patch("/budgets/:id", async (req, res) => {
+router.patch("/budgets/:id", requireAuth, async (req, res) => {
+  const userId = (req as AuthedRequest).userId;
   const id = parseInt(req.params.id);
   const parsed = UpdateBudgetBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid body" });
-    return;
-  }
-  const [row] = await db
-    .update(budgetsTable)
+  if (!parsed.success) { res.status(400).json({ error: "Invalid body" }); return; }
+  const [row] = await db.update(budgetsTable)
     .set({ monthlyLimit: String(parsed.data.monthlyLimit) })
-    .where(eq(budgetsTable.id, id))
-    .returning();
-  if (!row) {
-    res.status(404).json({ error: "Not found" });
-    return;
-  }
-  res.json({
-    ...row,
-    monthlyLimit: Number(row.monthlyLimit),
-    currentSpend: 0,
-    percentUsed: 0,
-    isOverBudget: false,
-    createdAt: row.createdAt.toISOString(),
-  });
+    .where(and(eq(budgetsTable.id, id), eq(budgetsTable.userId, userId))).returning();
+  if (!row) { res.status(404).json({ error: "Not found" }); return; }
+  res.json({ ...row, monthlyLimit: Number(row.monthlyLimit), currentSpend: 0, percentUsed: 0, isOverBudget: false, createdAt: row.createdAt.toISOString() });
 });
 
-router.delete("/budgets/:id", async (req, res) => {
+router.delete("/budgets/:id", requireAuth, async (req, res) => {
+  const userId = (req as AuthedRequest).userId;
   const id = parseInt(req.params.id);
-  await db.delete(budgetsTable).where(eq(budgetsTable.id, id));
+  await db.delete(budgetsTable).where(and(eq(budgetsTable.id, id), eq(budgetsTable.userId, userId)));
   res.status(204).send();
 });
 
